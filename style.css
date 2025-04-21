@@ -1,1 +1,66 @@
 body { font-family: Arial, sans-serif; background: linear-gradient(to bottom right, #fffcda, #d8f0ff); text-align: center; padding: 20px; } img { width: 200px; height: 200px; } button { margin: 5px; padding: 10px 15px; font-size: 16px; } .hidden { display: none; } .stats, .shop { margin-top: 10px; }
+.game-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.game-menu button {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.game-menu button:hover {
+  background-color: #f0f8ff;
+  transform: scale(1.05);
+}
+.game-menu button span {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+  100% { transform: rotate(-3deg); }
+}
+
+.animate-pop {
+  animation: pop 0.3s ease;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.4s ease;
+}
+
+body.night {
+  background: linear-gradient(to bottom, #1c1c2b, #0e0e17);
+  color: #eee;
+}
+
+.tile {
+  width: 80px;
+  height: 80px;
+  margin: 2px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}

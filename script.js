@@ -290,3 +290,153 @@ function startMusicQuiz() {
     colorButtons.appendChild(btn);
   });
 }
+
+// Dodaj animację po poprawnej odpowiedzi
+function animateCorrect(el) {
+  el.classList.add("animate-pop");
+  setTimeout(() => el.classList.remove("animate-pop"), 300);
+}
+
+// Dodaj animację po błędnej odpowiedzi
+function animateIncorrect(el) {
+  el.classList.add("animate-wiggle");
+  setTimeout(() => el.classList.remove("animate-wiggle"), 400);
+}
+
+// Nadpisujemy selectColor by dodać animację
+function selectColor(color) {
+  const buttons = [...colorButtons.children];
+  const clicked = buttons.find(b => b.textContent === "" && b.style.backgroundColor === color);
+
+  if (color === targetColor) {
+    score++;
+    messageEl.textContent = 'Brawo! 🎉';
+    if (clicked) animateCorrect(clicked);
+    startColorGame();
+  } else {
+    messageEl.textContent = 'Spróbuj jeszcze raz!';
+    if (clicked) animateIncorrect(clicked);
+  }
+  updateStats();
+}
+
+function showConfetti() {
+  confetti({
+    particleCount: 150,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
+}
+
+// Konfetti co 10 punktów
+function updateStats() {
+  energyEl.textContent = energy;
+  hungerEl.textContent = hunger;
+  scoreEl.textContent = score;
+  level = Math.floor(score / 5) + 1;
+  levelEl.textContent = level;
+
+  if (score > 0 && score % 10 === 0) {
+    showConfetti();
+  }
+}
+
+// Zapis i odczyt postępu
+window.addEventListener("load", () => {
+  const saved = JSON.parse(localStorage.getItem("densikSave") || "{}");
+  if (saved.name) {
+    playerName = saved.name;
+    document.getElementById("playerName").textContent = playerName;
+    energy = saved.energy || 100;
+    hunger = saved.hunger || 0;
+    score = saved.score || 0;
+    outfit = saved.outfit || "default";
+    setOutfit(outfit);
+    updateStats();
+  } else {
+    const name = prompt("Jak masz na imię?");
+    playerName = name || "Gracz";
+    document.getElementById("playerName").textContent = playerName;
+  }
+});
+
+function saveGame() {
+  const save = {
+    name: playerName,
+    energy,
+    hunger,
+    score,
+    outfit
+  };
+  localStorage.setItem("densikSave", JSON.stringify(save));
+}
+
+// Losowa pogoda (demo)
+function randomWeather() {
+  const icons = ['☀️', '🌧️', '⛅', '❄️'];
+  const selected = icons[Math.floor(Math.random() * icons.length)];
+  document.getElementById("weather").textContent = selected;
+}
+
+let playerName = "Gracz";
+setInterval(saveGame, 10000);
+setInterval(randomWeather, 5000);
+
+function startPuzzle() {
+  minigame.classList.remove('hidden');
+  gameMenu.classList.add('hidden');
+  messageEl.textContent = '🧩 Ułóż puzzle – przesuwanka!';
+  colorButtons.innerHTML = '';
+
+  const gridSize = 3;
+  const tiles = [];
+  let empty = { row: gridSize - 1, col: gridSize - 1 };
+
+  // Tworzymy tablicę w losowej kolejności
+  const order = Array.from({ length: gridSize * gridSize - 1 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
+  order.push(null); // ostatni to puste
+
+  for (let i = 0; i < gridSize * gridSize; i++) {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    const num = order[i];
+    if (num !== null) {
+      tile.style.backgroundImage = 'url("assets/densik-party.png")';
+      tile.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
+      tile.style.backgroundPosition = `${(num - 1) % gridSize * 100 / (gridSize - 1)}% ${Math.floor((num - 1) / gridSize) * 100 / (gridSize - 1)}%`;
+      tile.dataset.num = num;
+      tile.onclick = () => tryMove(i);
+    } else {
+      tile.dataset.empty = true;
+    }
+    tiles.push(tile);
+    colorButtons.appendChild(tile);
+  }
+
+  function tryMove(index) {
+    const row = Math.floor(index / gridSize);
+    const col = index % gridSize;
+    const dx = Math.abs(row - empty.row);
+    const dy = Math.abs(col - empty.col);
+    if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
+      // Zamień z pustym
+      const emptyIndex = empty.row * gridSize + empty.col;
+      colorButtons.insertBefore(tiles[index], tiles[emptyIndex]);
+      colorButtons.insertBefore(tiles[emptyIndex], tiles[index].nextSibling);
+      [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+      empty = { row, col };
+      checkSolved();
+    }
+  }
+
+  function checkSolved() {
+    const current = [...colorButtons.children];
+    const correct = Array.from({ length: gridSize * gridSize }, (_, i) => i + 1);
+    for (let i = 0; i < current.length - 1; i++) {
+      if (parseInt(current[i].dataset.num) !== i + 1) return;
+    }
+    messageEl.textContent = '🎉 Puzzle ułożone!';
+    score += 3;
+    updateStats();
+  }
+}

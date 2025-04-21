@@ -30,7 +30,16 @@
       <button onclick="startColorGame()">🎨 Kliknij kolor</button>
       <button onclick="startMemory()">🧠 Memory</button>
       <button onclick="startPuzzle()">🧩 Puzzle</button>
-<button onclick="startDanceGame()">🕺 Taniec rytmiczny</button>
+
+<div class="game-menu">
+  <button onclick="startColorGame()"><span>🎨</span><strong>Kolory</strong></button>
+  <button onclick="startMemory()"><span>🧠</span><strong>Memory</strong></button>
+  <button onclick="startPuzzle()"><span>🧩</span><strong>Puzzle</strong></button>
+  <button onclick="startDanceGame()"><span>🕺</span><strong>Taniec</strong></button>
+  <button onclick="startChoreoGame()"><span>💃</span><strong>Choreografia</strong></button>
+  <button onclick="startMusicQuiz()"><span>🎵</span><strong>Quiz muzyczny</strong></button>
+</div>
+
     <button onclick="startChoreoGame()">💃 Ułóż choreografię</button>
     <button onclick="startMusicQuiz()">🎵 Quiz o muzyce</button>
     </div>
@@ -45,6 +54,10 @@
       <button onclick="setOutfit('greenhat')">Zielona czapka</button>
     <button onclick="setOutfit('bluehoodie')">Niebieska bluza</button>
     <button onclick="setOutfit('glasses')">Okulary</button>
+    <button onclick="setOutfit('sunglasses')">Okulary przeciwsłoneczne</button>
+    <button onclick="setOutfit('crown')">Korona</button>
+    <button onclick="setOutfit('party')">Imprezowy</button>
+    <button onclick="setOutfit('pajamas')">Piżamka</button><button onclick="setOutfit('tracksuit')">Dres WASILEWSKI-FELSKA</button>
     </div>
   </div>
   <audio id="bgMusic" autoplay loop>
@@ -52,7 +65,7 @@
   </audio>
   <script src="script.js"></script>
 
-<script>
+<script>document.addEventListener('DOMContentLoaded',()=>{if(new Date().getHours()>=18){document.body.classList.add('night')}});
 document.body.addEventListener("click", () => {
   const music = document.getElementById("bgMusic");
   if (music && music.paused) {
@@ -61,7 +74,7 @@ document.body.addEventListener("click", () => {
 }, { once: true });
 </script>
 
-<script>
+<script>document.addEventListener('DOMContentLoaded',()=>{if(new Date().getHours()>=18){document.body.classList.add('night')}});
 window.addEventListener("load", () => {
   const music = document.getElementById("bgMusic");
   if (music) {
@@ -76,6 +89,7 @@ window.addEventListener("load", () => {
   }
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
 
 
