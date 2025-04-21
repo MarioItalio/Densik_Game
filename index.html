@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gra z Densikiem</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🐶 Gra z Densikiem</h1>
+  <div id="game">
+    <img id="densik" src="assets/densik.png" alt="Densik" />
+    <p id="message">Densik czeka na Ciebie!</p>
+    <div class="stats">
+      <p>⚡ Energia: <span id="energy">100</span></p>
+      <p>🍽️ Głód: <span id="hunger">0</span></p>
+      <p>🏆 Punkty: <span id="score">0</span></p>
+      <p>🎯 Poziom: <span id="level">1</span></p>
+    </div>
+    <div class="actions">
+      <button onclick="feed()">🍔 Nakarm</button>
+      <button onclick="wash()">🛁 Umyj</button>
+      <button onclick="sleep()">🌙 Uśpij</button>
+      <button onclick="openGameMenu()">🧩 Wybierz grę</button>
+      <button onclick="dance()">💃 Tańcz</button>
+    </div>
+    <div id="gameMenu" class="hidden">
+      <h2>🎮 Wybierz mini-grę:</h2>
+      <button onclick="startColorGame()">🎨 Kliknij kolor</button>
+      <button onclick="startMemory()">🧠 Memory</button>
+      <button onclick="startPuzzle()">🧩 Puzzle</button>
+<button onclick="startDanceGame()">🕺 Taniec rytmiczny</button>
+    <button onclick="startChoreoGame()">💃 Ułóż choreografię</button>
+    <button onclick="startMusicQuiz()">🎵 Quiz o muzyce</button>
+    </div>
+    <div id="minigame" class="hidden">
+      <h2>Kliknij kolor: <span id="targetColor"></span></h2>
+      <div id="colorButtons"></div>
+    </div>
+    <div class="shop">
+      <h2>🛍️ Sklep z ubrankami</h2>
+      <button onclick="setOutfit('default')">Bez ubranka</button>
+      <button onclick="setOutfit('redshirt')">Czerwona bluza</button>
+      <button onclick="setOutfit('greenhat')">Zielona czapka</button>
+    <button onclick="setOutfit('bluehoodie')">Niebieska bluza</button>
+    <button onclick="setOutfit('glasses')">Okulary</button>
+    </div>
+  </div>
+  <audio id="bgMusic" autoplay loop>
+    <source src="assets/theme.mp3" type="audio/mpeg">
+  </audio>
+  <script src="script.js"></script>
+
+<script>
+document.body.addEventListener("click", () => {
+  const music = document.getElementById("bgMusic");
+  if (music && music.paused) {
+    music.play().catch(() => {});
+  }
+}, { once: true });
+</script>
+
+<script>
+window.addEventListener("load", () => {
+  const music = document.getElementById("bgMusic");
+  if (music) {
+    const playAttempt = music.play();
+    if (playAttempt !== undefined) {
+      playAttempt.catch(() => {
+        document.body.addEventListener("click", () => {
+          music.play().catch(() => {});
+        }, { once: true });
+      });
+    }
+  }
+});
+</script>
+</body>
+
+
+</html>

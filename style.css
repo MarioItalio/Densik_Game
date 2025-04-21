@@ -1,0 +1,1 @@
+body { font-family: Arial, sans-serif; background: linear-gradient(to bottom right, #fffcda, #d8f0ff); text-align: center; padding: 20px; } img { width: 200px; height: 200px; } button { margin: 5px; padding: 10px 15px; font-size: 16px; } .hidden { display: none; } .stats, .shop { margin-top: 10px; }
